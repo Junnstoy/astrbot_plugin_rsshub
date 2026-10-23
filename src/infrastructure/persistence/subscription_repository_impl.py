@@ -143,14 +143,14 @@ class SubscriptionRepositoryImpl:
             return [self._to_entity(orm) for orm in orms]
 
     async def save(self, subscription: Subscription) -> Subscription:
-        """保存订阅"""
+        """保存订阅：存在则更新，不存在则插入。"""
         db = get_database()
         async with db.get_session() as session:
             orm = self._to_orm(subscription)
-            session.add(orm)
+            saved_orm = await session.merge(orm)
             await session.commit()
-            await session.refresh(orm)
-            return self._to_entity(orm)
+            await session.refresh(saved_orm)
+            return self._to_entity(saved_orm)
 
     async def delete(self, subscription: Subscription) -> None:
         """删除订阅"""
