@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- 修复订阅保存把已有 ID 当成新记录插入的问题，避免正常创建订阅后的单个/批量启停或导入更新触发 `UNIQUE constraint failed: rsshub_sub.id`。新增真实 SQLite 回归测试，覆盖创建、重复更新及启停后保留原 ID 和行数。
+
 ## [2.1.4] - 2026-07-25
 
 ### Added
